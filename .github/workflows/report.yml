@@ -1,13 +1,13 @@
 # Auto-report action script, 3 times a day
 
-name: Auto-report action
+name: report action
 
 on: 
   push:
     branches:
       - futari_main
   schedule:
-    - cron: '10 4,11,17,23 * * *'
+    - cron: '10 0,6,12,18 * * *'
 
 jobs:
   build:

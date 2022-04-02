@@ -1,6 +1,6 @@
 # Auto-report action script, 3 times a day
 
-name: report action
+name: futari report action
 
 on: 
   push:

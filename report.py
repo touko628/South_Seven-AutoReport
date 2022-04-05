@@ -75,7 +75,8 @@ class Report(object):
         url = "https://weixine.ustc.edu.cn/2020/daliy_report"
         resp=session.post(url, data=data, headers=headers)
         print(resp)
-        data = session.get("https://weixine.ustc.edu.cn/2020").text
+        #data = session.get("https://weixine.ustc.edu.cn/2020").text
+        data=resp.text
         soup = BeautifulSoup(data, 'html.parser')
         pattern_pre = re.compile("202[0-9]-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
         pattern = re.compile("上报成功，最近一次上报是([0-9]*天)?([0-9]*(小)?时)?([0-9]*分钟)?([0-9]*秒)?")

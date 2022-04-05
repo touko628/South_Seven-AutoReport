@@ -77,31 +77,14 @@ class Report(object):
         print(resp)
         data = session.get("https://weixine.ustc.edu.cn/2020").text
         soup = BeautifulSoup(data, 'html.parser')
-        pattern = re.compile("202[0-9]-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
+        pattern_pre = re.compile("202[0-9]-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
+        pattern = re.compile("上报成功，最近一次上报是([0-9]*天)?([0-9]*(小)?时)?([0-9]*分钟)?([0-9]*秒)?")
         token = soup.find(
-            "span", {"style": "position: relative; top: 5px; color: #666;"})
+            "p", {"class": "alert alert-success"})
         flag = False
-        print(token.text)
+        print(token)
         if pattern.search(token.text) is not None:
-            date = pattern.search(token.text).group()
-            print("Latest report: " + date)
-            date = date + " +0800"
-            reporttime = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
-            print("Reporttime : " + format(reporttime))
-            timenow = datetime.datetime.now(pytz.timezone('Asia/Shanghai'))
-            print("Nowtime : " + format(timenow))
-            delta = timenow - reporttime
-            delta_nega = reporttime - timenow
-            print("Delta is ")
-            print(delta)
-            print("Delta_Negative is ")
-            print(delta_nega)
-            if delta.seconds < 120 or delta_nega.seconds < 120:
-                flag = True
-            if delta.seconds < delta_nega.seconds:
-                print("{} second(s) before.".format(delta.seconds))
-            else:
-                print("{} second(s) before.".format(delta_nega.seconds))
+            print("success")
         if flag == False:
             print("Report FAILED!")
             print("健康打卡失败, 取消例行报备!")

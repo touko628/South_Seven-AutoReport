@@ -75,24 +75,14 @@ class Report(object):
         url = "https://weixine.ustc.edu.cn/2020/daliy_report"
         resp=session.post(url, data=data, headers=headers)
         print(resp)
-        #data = session.get("https://weixine.ustc.edu.cn/2020").text
-        data=resp.text
-        soup = BeautifulSoup(data, 'html.parser')
-        pattern_pre = re.compile("202[0-9]-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
-        pattern = re.compile("上报成功，最近一次上报是([0-9]*天)?([0-9]*(小)?时)?([0-9]*分钟)?([0-9]*秒)?")
-        token = soup.find(
-            "p", {"class": "alert alert-success"})
-        flag = False
-        print(token)
-        if pattern.search(token.text) is not None:
-            print("success")
-        if flag == False:
-            print("Report FAILED!")
-            print("健康打卡失败, 取消例行报备!")
-            return flag
+        res = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i?t=3", allow_redirects=False)
+        if(res.status_code == 302):
+            print("report failed!")
+        elif(res.status_code == 200):
+            print("report success!")
         else:
-            print("Report SUCCESSFUL!")
-        
+            print("unknown error, code: "+str(res.status_code))
+
         # 自动出校报备
         ret = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i")
         #print(ret.status_code)
